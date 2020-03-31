@@ -146,9 +146,9 @@ nav {
 	margin: 1rem 0;
 }
 .forecast__switch button {
-	border-top: 1px solid #999;
-	border-bottom: 1px solid #999;
-	border-left: 1px solid #999;
+	border-top: 1px solid transparent;
+	border-bottom: 1px solid transparent;
+	border-left: 1px solid transparent;
 	background-color: #eee;
 	color: #999;
 	font-size: 14px;

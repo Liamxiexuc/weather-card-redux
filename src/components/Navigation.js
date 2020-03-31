@@ -1,10 +1,10 @@
 import React from 'react';
 
-function Navigation() {
+function Navigation(props) {
 	return (
 		<nav>
 		  	<div>
-				<input className="search-input" />
+				<input className="search-input" onChange={props.handleInputChange} value={props.input}/>
 				<button className="search-btn">
 					<i className="fa fa-search" />
 				</button>

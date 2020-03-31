@@ -1,34 +1,45 @@
-import React from 'react';
+import React from "react";
+import axios from "axios";
+import { format } from "date-fns";
 
-import ForecastRow from './ForecastRow';
+import ForecastRow from "./ForecastRow";
 
-function WeatherForecast() {
-	return (
-		<section class="weather-forecast">
-			<div class="forecast__switch">
-				<button class="forecast__switch_0 switch-active">5 items</button>
-				<button class="forecast__switch_1">10 items</button>
-			</div>
-			<ForecastRow
-				day="Fri"
-				high="19 c"
-				low="8 c"
-				time="10:00"
-			/>
-			<ForecastRow
-				day="Fri"
-				high="19 c"
-				low="8 c"
-				time="13:00"
-			/>
-			<ForecastRow
-				day="Fri"
-				high="19 c"
-				low="8 c"
-				time="16:00"
-			/>
-		</section>
-	);
+class WeatherForecast extends React.Component {
+
+
+  render() {
+    return (
+      <section class="weather-forecast">
+        <div class="forecast__switch">
+          <button
+            className={`forecast__switch_0 ${
+              this.props.limit === 5 ? "switch-active" : ""
+            }`}
+            onClick={() => this.props.changeLimit(5)}
+          >
+            5 items
+          </button>
+          <button
+            className={`forecast__switch_1 ${
+              this.props.limit === 10 ? "switch-active" : ""
+            }`}
+            onClick={() => this.props.changeLimit(10)}
+          >
+            10 items
+          </button>
+        </div>
+        {this.props.forecasts.map(forecast => (
+          <ForecastRow
+            key={forecast.day + forecast.time}
+            day={forecast.day}
+            high={forecast.high}
+            low={forecast.low}
+            time={forecast.time}
+          />
+        ))}
+      </section>
+    );
+  }
 }
 
 export default WeatherForecast;
