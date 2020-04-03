@@ -1,10 +1,12 @@
 import React from "react";
+import { connect } from "react-redux";
 import { format } from "date-fns";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Main from "./components/Main";
 import Navigation from "./components/Navigation";
 import { getWeatherFor } from "./utils/axios";
+import { fetchDataThunkAction } from "./redux/weatherActions";
 
 import "./App.css";
 
@@ -13,42 +15,25 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      forecasts: [],
-      limit: 5,
-      city: "",
-      current: {},
       input: "",
-      unit: "c"
+      unit: "c",
     };
   }
 
   componentDidMount() {
     //fetch data
-    getWeatherFor("brisbane").then(this.updateWeather);
+    this.props.fetchWeatherData('Hobart');
   }
 
   toggleUnit = () => {
     this.setState(state => ({ unit: this.state.unit === "c" ? "f" : "c" }));
   };
 
-  changeLimit = limit => {
-    this.setState({ limit });
-  };
-
   handleInputChange = event => {
     this.setState({ input: event.target.value });
   };
 
-  updateWeather = res => {
-    const city = res.data.data.city.name;
-    const current = res.data.data.current;
-    const forecasts = res.data.data.forecast;
-    this.setState({
-      forecasts,
-      city,
-      current,
-    });
-  };
+
 
   handleSearch = () => {
     getWeatherFor(this.state.input).then(this.updateWeather);
@@ -66,11 +51,6 @@ class App extends React.Component {
           unit={this.state.unit}
         />
         <Main
-          forecasts={this.state.forecasts.slice(0, this.state.limit)}
-          changeLimit={this.changeLimit}
-          limit={this.state.limit}
-          city={this.state.city}
-          current={this.state.current}
           unit={this.state.unit}
         />
         <Footer />
@@ -79,4 +59,8 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => ({
+    fetchWeatherData: city => dispatch(fetchDataThunkAction(city)),
+})
+
+export default connect(null, mapDispatchToProps)(App);
