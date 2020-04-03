@@ -16,49 +16,20 @@ class App extends React.Component {
       forecasts: [],
       limit: 5,
       city: "",
-      minCelsius: "",
-      humidity: "",
-      windSpeed: "",
-      windDirection: "",
-      input: ""
+      current: {},
+      input: "",
+      unit: "c"
     };
   }
 
   componentDidMount() {
     //fetch data
-    getWeatherFor("brisbane").then(response => {
-      const city = response.data.data.city.name;
-      const {
-        minCelsius,
-        humidity,
-        windSpeed,
-        windDirection
-      } = response.data.data.current;
-
-      const forecasts = response.data.data.forecast
-        .slice(0, 10)
-        .map(forecast => {
-          const date = new Date(forecast.time * 1000);
-          const day = format(date, "EEE");
-          const time = format(date, "HH:mm");
-
-          return {
-            day,
-            time,
-            high: forecast.maxCelsius,
-            low: forecast.minCelsius
-          };
-        });
-      this.setState({
-        forecasts,
-        city,
-        minCelsius,
-        humidity,
-        windSpeed,
-        windDirection
-      });
-    });
+    getWeatherFor("brisbane").then(this.updateWeather);
   }
+
+  toggleUnit = () => {
+    this.setState(state => ({ unit: this.state.unit === "c" ? "f" : "c" }));
+  };
 
   changeLimit = limit => {
     this.setState({ limit });
@@ -68,6 +39,21 @@ class App extends React.Component {
     this.setState({ input: event.target.value });
   };
 
+  updateWeather = res => {
+    const city = res.data.data.city.name;
+    const current = res.data.data.current;
+    const forecasts = res.data.data.forecast;
+    this.setState({
+      forecasts,
+      city,
+      current,
+    });
+  };
+
+  handleSearch = () => {
+    getWeatherFor(this.state.input).then(this.updateWeather);
+  };
+
   render() {
     return (
       <div className="weather-channel__container">
@@ -75,16 +61,17 @@ class App extends React.Component {
         <Navigation
           input={this.state.input}
           handleInputChange={this.handleInputChange}
+          handleSearch={this.handleSearch}
+          toggleUnit={this.toggleUnit}
+          unit={this.state.unit}
         />
         <Main
           forecasts={this.state.forecasts.slice(0, this.state.limit)}
           changeLimit={this.changeLimit}
           limit={this.state.limit}
           city={this.state.city}
-          minCelsius={this.state.minCelsius}
-          humidity={this.state.humidity}
-          windSpeed={this.state.windSpeed}
-          windDirection={this.state.windDirection}
+          current={this.state.current}
+          unit={this.state.unit}
         />
         <Footer />
       </div>

@@ -8,15 +8,14 @@ function Main(props) {
     <main>
       <WeatherCondition
         city={props.city}
-        minCelsius={props.minCelsius}
-        humidity={props.humidity}
-        windSpeed={props.windSpeed}
-        windDirection={props.windDirection}
+        current={props.current}
+        unit={props.unit}
       />
       <WeatherForecast
         forecasts={props.forecasts}
         changeLimit={props.changeLimit}
         limit={props.limit}
+        unit={props.unit}
       />
     </main>
   );
