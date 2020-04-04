@@ -4,14 +4,10 @@ import WeatherCondition from './WeatherCondition';
 import WeatherForecast from './WeatherForecast';
 
 function Main(props) {
-	return (
+    return (
     <main>
-      <WeatherCondition
-        unit={props.unit}
-      />
-      <WeatherForecast
-        unit={props.unit}
-      />
+      <WeatherCondition />
+      <WeatherForecast />
     </main>
   );
 }

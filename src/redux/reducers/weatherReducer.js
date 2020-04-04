@@ -3,7 +3,7 @@ import  {
     FETCH_DATA_SUCCESS,
     FETCH_DATA,
     FETCH_DATA_FAILURE,
-}  from './weatherActions';
+}  from '../actions/weatherActions';
 
 const initialState = {
     limit: 5,
